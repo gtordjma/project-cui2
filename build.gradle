@@ -19,6 +19,12 @@ dependencies {
     compile group: 'org.json', name: 'json', version: '20090211'
     // https://mvnrepository.com/artifact/com.j2html/j2html
     compile group: 'com.j2html', name: 'j2html', version: '1.2.2'
+    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+    compile group: 'org.postgresql', name: 'postgresql', version: '9.4-1201-jdbc41'
+    // https://mvnrepository.com/artifact/org.apache.spark/spark-sql
+    compile group: 'org.apache.spark', name: 'spark-sql_2.11', version: '2.3.0'
+
+
 
 
 }
