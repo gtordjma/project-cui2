@@ -1,8 +1,23 @@
 {{#partial "content"}}
-        {{#each myRectangles}}
+<!--        {{#each myRectangles}}
 <p><h3>Your rectangle's height is {{height}}</h3></p>
 <p><h3>Your rectangle's width is {{width}}</h3></p>
-        {{/each}}
+        {{/each}}-->
+<a type="button" href="/login"  class="btn btn-warning" role="button">Login</a>
+<a type="button" href="/signup" class="btn btn-warning" role="button">Sign Up</a>
+
+
+        {{#if id}}
+<form method='post' action='/'>
+<div class="form-group">
+    <label>Tweet</label>
+    <input name="tweet" class="form-control" type="text">
+</div>
+
+<a type="button" class="btn btn-primary" role="button">Tweet</a>
+</form>
+{{/if}}
+
         {{/partial}}
 
         {{> layout.hbs}}

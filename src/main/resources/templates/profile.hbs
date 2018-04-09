@@ -1,0 +1,38 @@
+{{#partial "title" }}
+        Join Twitter Now
+        {{/partial}}
+
+        <!--form.hbs.-->
+        {{#partial "content"}}
+
+<h1>Profile Information</h1>
+<!--<form method='post' action='/signup'>-->
+<div class="form-group">
+    <label>Id</label>
+    <input name="firstname" class="form-control" value='{{ id }}' type="text">
+    <label>First Name</label>
+    <input name="firstname" class="form-control" value='{{ firstname }}' type="text">
+    <label>Last Name</label>
+    <input name="lastname" class="form-control" value='{{ lastname }}' type="text">
+    <label>Email</label>
+    <input name="email" class="form-control" value='{{ email }}' type="email">
+    <label>Follower</label>
+    <ul>
+        {{#each follower}}
+        <li>{{ this }}</li>
+        {{/each}}
+    </ul>
+    <label>Follows</label>
+    <ul>
+        {{#each follows}}
+        <li>{{ this }}</li>
+        {{/each}}
+    </ul>
+</div>
+
+<!--<button type="submit" class="btn">Go!</button>-->
+</form>
+        <!--form.hbs.-->
+        {{/partial}}
+
+        {{> layout.hbs}}

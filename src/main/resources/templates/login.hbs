@@ -1,23 +1,26 @@
 {{#partial "title" }}
-        Login
+        Join Twitter Now
         {{/partial}}
 
         <!--form.hbs.-->
         {{#partial "content"}}
 
-<h1>Fill in your name and your friend's name to create your custom greeting!</h1>
-<form method='post' action='/verif'>
+<h1>Fill in the form!</h1>
+<form method='post' action='/login'>
 <div class="form-group">
-    <label for="username">Your username</label>
-    <input id="username" name="username" class="form-control" type="text">
+    <label>Email</label>
+    <input name="email" class="form-control" type="email">
+    <label>Password</label>
+    <input name="pwd" class="form-control" type="password">
 </div>
-<div class="form-group">
-    <label for="pwd">Your Password</label>
-    <input id="pwd" name="pwd" class="form-control" type="password">
-</div>
+
 <button type="submit" class="btn">Go!</button>
 </form>
-        <!--form.hbs.-->
+    {{#if error}}
+        <div class="alert alert-danger">
+            <strong>Error:</strong> {{error}}
+        </div>
+        {{/if}}
         {{/partial}}
 
         {{> layout.hbs}}
