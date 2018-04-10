@@ -1,0 +1,28 @@
+{{#partial "title" }}
+        Join Twitter now !
+{{/partial}}
+
+        <!--form.hbs.-->
+{{#partial "content"}}
+
+<h1>Fill in your name and your friend's name to create your custom greeting!</h1>
+<form method='post' action='/sub'>
+<div class="form-group">
+    <label for="sender">First name</label>
+    <input id="" name="firstname" class="form-control" type="text">
+
+    <label for="sender">Last name</label>
+    <input id="" name="lastname" class="form-control" type="text">
+
+    <label for="sender">Email</label>
+    <input id="" name="email" class="form-control" type="email">
+
+    <label for="sender">Password</label>
+    <input id="sender" name="pwd" class="form-control" type="password">
+</div>
+<button type="submit" class="btn">Go!</button>
+</form>
+        <!--form.hbs.-->
+{{/partial}}
+
+{{> layout.hbs}}

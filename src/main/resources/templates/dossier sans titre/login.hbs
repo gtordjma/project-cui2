@@ -1,0 +1,23 @@
+{{#partial "title" }}
+        Login
+        {{/partial}}
+
+        <!--form.hbs.-->
+        {{#partial "content"}}
+
+<h1>Fill in your name and your friend's name to create your custom greeting!</h1>
+<form method='post' action='/verif'>
+<div class="form-group">
+    <label for="username">Your username</label>
+    <input id="username" name="username" class="form-control" type="text">
+</div>
+<div class="form-group">
+    <label for="pwd">Your Password</label>
+    <input id="pwd" name="pwd" class="form-control" type="password">
+</div>
+<button type="submit" class="btn">Go!</button>
+</form>
+        <!--form.hbs.-->
+        {{/partial}}
+
+        {{> layout.hbs}}
