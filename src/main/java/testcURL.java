@@ -1,34 +1,41 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import org.json.*;
 import java.lang.*;
-import java.io.IOException;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.util.EntityUtils;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 public class testcURL {
 
 
         public static void main(String[] args) throws IOException {
-           System.out.println(sendData());
+            JSONObject json = sendData();
+            JSONArray arr = json.getJSONObject("hits").getJSONArray("hits");
+            Map<String, Integer> res  = new HashMap<>();
+            for (int i = 0; i < arr.length(); i++) {
+                System.out.println(arr.getJSONObject(i).getJSONObject("_source"));
+/*                String type = arr.getJSONObject(i).getString();
+                Integer amount = arr.getJSONObject(i).getInt("amount");
+                res.put(type, amount);*/
+            }
+/*            Set set = res.entrySet();
+            Iterator iterator = set.iterator();
+            while(iterator.hasNext()) {
+                Map.Entry mentry = (Map.Entry)iterator.next();
+                System.out.print("key is: "+ mentry.getKey() + " & Value is: ");
+                System.out.println(mentry.getValue());
+            }*/
         }
 
 
-        public static String sendData() throws IOException {
+        public static JSONObject sendData() throws IOException {
             JSONObject json = new JSONObject();
             json.put("query", "\"match_all\": {}");
 
@@ -41,7 +48,7 @@ public class testcURL {
                 request.addHeader("content-type", "application/json");
                 /*System.out.println(getStringFromInputStream(params.getContent()));*/
                 HttpResponse  response = httpClient.execute(request);
-                return getStringFromInputStream(response.getEntity().getContent());
+                return new JSONObject(getStringFromInputStream(response.getEntity().getContent()));
 
 // handle response here...
             } catch (Exception ex) {
@@ -49,44 +56,8 @@ public class testcURL {
             } finally {
                 httpClient.close();
             }
-            return "";
+            return null;
 
-/*            // curl_init and url
-            URL url = new URL( "\"http://localhost:9200/gtordjma/tutoriels/_search\" -H 'Content-Type: application/json' -d' {\"query\":{\"match_all\": {}}}'");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-
-            // CURLOPT_POST
-            con.setRequestMethod("POST");
-
-// CURLOPT_FOLLOWLOCATION
-            con.setInstanceFollowRedirects(true);
-
-            String postData = "my_data_for_posting";
-            con.setRequestProperty("Content-length",
-                    String.valueOf(postData.length()));
-
-            con.setDoOutput(true);
-            con.setDoInput(true);
-
-            DataOutputStream output = new DataOutputStream(con.getOutputStream());
-            output.writeBytes(postData);
-            output.close();
-
-// "Post data send ... waiting for reply");
-            int code = con.getResponseCode(); // 200 = HTTP_OK
-            System.out.println("Response    (Code):" + code);
-            System.out.println("Response (Message):" + con.getResponseMessage());
-
-// read the response
-            DataInputStream input = new DataInputStream(con.getInputStream());
-            int c;
-            StringBuilder resultBuf = new StringBuilder();
-            while ((c = input.read()) != -1) {
-                resultBuf.append((char) c);
-            }
-            input.close();
-
-            return resultBuf.toString();*/
         }
 
     // convert InputStream to String
