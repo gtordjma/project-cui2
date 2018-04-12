@@ -1,0 +1,46 @@
+{{#partial "title" }}
+        Join Twitter Now
+        {{/partial}}
+
+        <!--form.hbs.-->
+        {{#partial "content"}}
+
+<h1>Tweet</h1>
+        <!--<form method='post' action='/signup'>-->
+<div>
+{{#each tweets}}
+
+<ul class="tweet">
+    <li class="side"><h3>{{ username }}<h3></h3></li>
+    <li class="side">{{ date }}</li>
+    <li>{{ tweet }}</li>
+    <li>{{ hashtags }}</li>
+</ul>
+
+
+{{/each}}
+</div>
+
+<style>
+
+.tweet {
+    background-color: #2AA3EF;
+    border-radius: 26px;
+    color: black;
+}
+.side {
+    /* float: left; */
+    line-height: 20px;
+}
+
+li {
+    list-style:none;
+}
+
+
+
+</style>
+        <!--form.hbs.-->
+        {{/partial}}
+
+        {{> layout.hbs}}

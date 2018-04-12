@@ -11,11 +11,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class testcURL {
 
 
         public static void main(String[] args) throws IOException {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            System.out.println(sdf.format(new Date()));
+
+
             JSONObject json = sendData();
             JSONArray arr = json.getJSONObject("hits").getJSONArray("hits");
             Map<String, Integer> res  = new HashMap<>();
