@@ -1,33 +1,53 @@
 {{#partial "title" }}
-        Join Twitter Now
+        Profile Information
         {{/partial}}
 
         <!--form.hbs.-->
         {{#partial "content"}}
 
 <h1>Profile Information</h1>
+
+        {{#tralli "{{this.userinfo.0}}" "=" "2"}}
+        True
+        {{else}}
+        False
+        {{/tralli}}
 <!--<form method='post' action='/signup'>-->
+{{#if this.userinfo.0}}
 <div class="form-group">
     <label>Id</label>
-    <input name="firstname" class="form-control" value='{{ id }}' type="text">
+    <input name="firstname" class="form-control" value='{{ this.userinfo.0.id }}' type="text">
     <label>First Name</label>
-    <input name="firstname" class="form-control" value='{{ firstname }}' type="text">
+    <input name="firstname" class="form-control" value='{{ this.userinfo.0.firstname }}' type="text">
     <label>Last Name</label>
-    <input name="lastname" class="form-control" value='{{ lastname }}' type="text">
+    <input name="lastname" class="form-control" value='{{ this.userinfo.0.lastname }}' type="text">
     <label>Email</label>
-    <input name="email" class="form-control" value='{{ email }}' type="email">
+    <input name="email" class="form-control" value='{{ this.userinfo.0.email }}' type="email">
     <label>Follower</label>
     <ul>
-        {{#each follower}}
+        {{#each this.userinfo.0.follower}}
         <li>{{ this }}</li>
         {{/each}}
     </ul>
     <label>Follows</label>
     <ul>
-        {{#each follows}}
+        {{#each this.userinfo.0.follows}}
         <li>{{ this }}</li>
         {{/each}}
     </ul>
+</div>
+{{/if}}
+<div>
+{{#each tweets}}
+<ul class="tweet">
+    <li class="side"><a href="/profile/{{id_user}}"><h3>{{ username }}</h3></a></li>
+    <li class="side">{{ date }}</li>
+    <li>{{ tweet }}</li>
+    {{#if ../this.userinfo.0}}
+    <li><a type="button" href="delete/{{id_tweet}}" class="btn btn-primary" role="button">Delete</a></li>
+    {{/if}}
+</ul>
+{{/each}}
 </div>
 
 <!--<button type="submit" class="btn">Go!</button>-->
