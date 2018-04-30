@@ -147,7 +147,7 @@ public class Db {
             //Création d'un objet Statement
             Statement state = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY,
                     ResultSet.CONCUR_READ_ONLY);
-            //L'objet ResultSet contient le résultat de la requête SQL
+            //L'objet  ResultSet contient le résultat de la requête SQL
             state.executeUpdate("update "+BDD+" SET follows = array_remove(follows, "+follow_id+") where id = "+user.getId());
             state.executeUpdate("update "+BDD+" SET follower = array_remove(follower, "+user.getId()+") where id = "+follow_id);
 

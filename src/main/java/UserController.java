@@ -19,7 +19,7 @@ public class UserController {
 
 		HandlebarsTemplateEngine handle = new HandlebarsTemplateEngine();
 
-		get("/", (request, response) -> { //request for route happens at this location
+		get("/", (request, response) -> { //request  for route happens at this location
 			ES es = new ES();
 			Map<String, List<Map<String, Object>>> model = es.get_alltweet();
 			model.put("userinfo", model_user_info(request).get("userinfo"));

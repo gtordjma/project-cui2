@@ -17,7 +17,7 @@ public class UserService extends Applet{
 			User user_register = new User(firstname, lastname, email, pwd);
 			result.setUser(user_register);
 		}else{
-			result.setError("This email already exists in our system. please choose a different one");
+			result.setError("This email  already exists in our system. please choose a different one");
 		}
 		return result;
 	}
