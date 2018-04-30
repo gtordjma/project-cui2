@@ -72,10 +72,43 @@ public class Db {
             }
             state.close();
         } catch (Exception e) {
-            System.out.print("lllllll");
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean follow(User user, int follow_id){
+        user.setFollows(follow_id);
+        try {
+            //Création d'un objet Statement
+            Statement state = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            //L'objet ResultSet contient le résultat de la requête SQL
+            state.executeUpdate("update "+BDD+" SET follows = array_append(follows, "+follow_id+") where id = "+user.getId());
+            state.executeUpdate("update "+BDD+" SET follower = array_append(follower, "+user.getId()+") where id = "+follow_id);
+            state.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean unfollow(User user, int follow_id){
+        user.unsetFollows(follow_id);
+        try {
+            //Création d'un objet Statement
+            Statement state = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY,
+                    ResultSet.CONCUR_READ_ONLY);
+            //L'objet ResultSet contient le résultat de la requête SQL
+            state.executeUpdate("update "+BDD+" SET follows = array_remove(follows, "+follow_id+") where id = "+user.getId());
+            state.executeUpdate("update "+BDD+" SET follower = array_remove(follower, "+user.getId()+") where id = "+follow_id);
+
+            state.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public boolean verify_pwd(String pwd_tmp,String pwd_db){
