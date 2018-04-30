@@ -7,12 +7,6 @@ import spark.template.handlebars.HandlebarsHelper;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 import spark.Request;
 import java.lang.Object;
-import com.github.jknack.handlebars.helper.*;
-import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.SparkConf;
-
-import org.elasticsearch.spark.rdd.api.java.JavaEsSpark;
 import static spark.Spark.*;
 
 public class UserController {
@@ -40,6 +34,19 @@ public class UserController {
 			model.put("userinfo", model_user_info(request).get("userinfo"));
 			return new ModelAndView(model, "index.hbs"); // assemble individual pieces and render
 		}, new HandlebarsHelper());
+
+		post("/modify", (req, res) -> {
+
+			String email = req.queryParams("email");
+			String pwd = req.queryParams("pwd");
+			getAuthenticatedUser(req).setEmail(email);
+			if (pwd != "")
+				getAuthenticatedUser(req).setPwd(pwd);
+			userService.modify(email, pwd, getAuthenticatedUser(req).getId());
+			res.redirect("/profile");
+			return null;
+		});
+
 
 		post("/", (req, res) -> {
             ES es = new ES();
@@ -217,24 +224,3 @@ public class UserController {
 		return request.session().attribute(USER_SESSION_ID);
 	}
 }
-
-
-/*
-		get("/users", (req, res) -> userService.getAllUsers(), JsonUtil.json());
-
-		get("/users/:id", (req, res) -> {
-			String id = req.params(":id");
-			User user = userService.getUser(id);
-			if (user != null) {
-				return user;
-			}
-			res.status(400);
-			return new ResponseError("No user with id '%s' found", id);
-		}, JsonUtil.json());
-
-		put("/users/:id", (req, res) -> userService.updateUser(
-				req.params(":id"),
-				req.queryParams("name"),
-				req.queryParams("email")
-		), JsonUtil.json());
-*/

@@ -34,6 +34,10 @@ public class UserService extends Applet{
 	    return database.Search(s);
     }
 
+    public void modify(String email, String pwd, int id){
+		database.modify(email, pwd, id);
+	}
+
 
 	public Result login(String email, String pwd) {
 		Result result = new Result();

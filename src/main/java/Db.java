@@ -127,6 +127,20 @@ public class Db {
         return false;
     }
 
+    public void modify(String email, String pwd, int id){
+        try {
+            //Création d'un objet Statement
+            Statement state = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            //L'objet ResultSet contient le résultat de la requête SQL
+            state.executeUpdate("update "+BDD+" SET email = '"+email+"' where id = "+id);
+            if (pwd != null && pwd != "")
+                state.executeUpdate("update "+BDD+" SET password = crypt('"+pwd+"', gen_salt('bf',8)) where id = "+id);
+            state.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public boolean unfollow(User user, int follow_id){
         user.unsetFollows(follow_id);
         try {

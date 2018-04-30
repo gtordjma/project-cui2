@@ -10,13 +10,20 @@
 
         <!--<form method='post' action='/signup'>-->
         {{#if this.userinfo.0}}
+
 <div class="form-group">
 <label>First Name</label>
-<input name="firstname" class="form-control" value='{{ this.userinfo.0.firstname }}' type="text">
+<input name="firstname" class="form-control" disabled="disabled" value='{{ this.userinfo.0.firstname }}' type="text">
 <label>Last Name</label>
-<input name="lastname" class="form-control" value='{{ this.userinfo.0.lastname }}' type="text">
+<input name="lastname" class="form-control" disabled="disabled" value='{{ this.userinfo.0.lastname }}' type="text">
+<form method='post' action='/modify'>
 <label>Email</label>
-<input name="email" class="form-control" value='{{ this.userinfo.0.email }}' type="email">
+<input name="email" class="form-control" value='{{ this.userinfo.0.email }}' type="email" required>
+<label>New Password</label>
+<input name="pwd" class="form-control" type="password" required>
+
+<button type="submit" class="btn btn-warning">Modify</button>
+</form>
 <label>Follower</label>
 <ul>
     {{#each this.userinfo.0.follower}}
