@@ -49,169 +49,52 @@ public class ES {
         return request;
     }
 
+    public List<Map<String, Object>> search(String query) throws IOException{
+        Map<String, List<Map<String, Object>>> model = new HashMap<String,List<Map<String, Object>>>();
+        List<Map<String, Object>> list = new ArrayList<>();
+        Map<String, Object> map;
+
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        try {
+            HttpPost request = getHttpPost(ES_URL + "/_search", query);
+            HttpResponse  response = httpClient.execute(request);
+            String s = getStringFromInputStream(response.getEntity().getContent());
+            int x = s.indexOf("{");
+            JSONObject json = new JSONObject(s.substring(x));
+            JSONArray arr = json.getJSONObject("hits").getJSONArray("hits");
+            String fin = "";
+            ObjectMapper mapper = new ObjectMapper();
+            for (int i = 0; i < arr.length(); i++) {
+                // convert JSON string to Map
+                fin = arr.getJSONObject(i).getJSONObject("_source").toString();
+                map = mapper.readValue(fin, Map.class);
+                map.put("id_tweet",  arr.getJSONObject(i).getString("_id"));
+                list.add(map);
+            }
+            return list;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            httpClient.close();
+        }
+        return null;
+    }
+
+
     public Map<String, List<Map<String, Object>>> get_alltweet() throws IOException{
         String query = "{\"query\":{\"match_all\": {}}, \"sort\": { \"date\": { \"order\": \"desc\" }}}";
         Map<String, List<Map<String, Object>>> model = new HashMap<String,List<Map<String, Object>>>();
-        List<Map<String, Object>> list = new ArrayList<>();
-        Map<String, Object> map;
-
-        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        try {
-            HttpPost request = getHttpPost(ES_URL + "/_search", query);
-/*            Header[] headers = request.getAllHeaders();
-            System.out.println(request.toString());
-            for (Header header : headers) {
-                System.out.println(header.getName() + ": " + header.getValue());
-            }*/
-            HttpResponse  response = httpClient.execute(request);
-            String s = getStringFromInputStream(response.getEntity().getContent());
-           /* System.out.println(s);*/
-            int x = s.indexOf("{");
-            JSONObject json = new JSONObject(s.substring(x));
-
-            JSONArray arr = json.getJSONObject("hits").getJSONArray("hits");
-
-
-
-            String fin = "";
-            ObjectMapper mapper = new ObjectMapper();
-            for (int i = 0; i < arr.length(); i++) {
-                // convert JSON string to Map
-                fin = arr.getJSONObject(i).getJSONObject("_source").toString();
-                map = mapper.readValue(fin, Map.class);
-                map.put("id_tweet",  arr.getJSONObject(i).getString("_id"));
-/*                System.out.println("print");
-                for(String key:map.keySet()){
-                    System.out.println("treeMap: [key: "+key+" , value: "+map.get(key)+"]");
-                }*/
-                list.add(map);
-            }
-            model.put("tweets", list);
-            return model;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            httpClient.close();
-        }
-        return null;
+        List<Map<String, Object>> List = search(query);
+        model.put("tweets", List);
+        return model;
     }
-
-    public List<Map<String, Object>> Search(String search) throws IOException{
-        String query = "{ \"query\":{ \"bool\": { \"must\": { \"query_string\": { \"query\": \""+search+"\" } } } } ,\"sort\": { \"date\": { \"order\": \"desc\" }}}";
-        Map<String, List<Map<String, Object>>> model = new HashMap<String,List<Map<String, Object>>>();
-        List<Map<String, Object>> list = new ArrayList<>();
-        Map<String, Object> map;
-
-        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        try {
-            HttpPost request = getHttpPost(ES_URL + "/_search", query);
-            HttpResponse  response = httpClient.execute(request);
-            String s = getStringFromInputStream(response.getEntity().getContent());
-            int x = s.indexOf("{");
-            JSONObject json = new JSONObject(s.substring(x));
-            JSONArray arr = json.getJSONObject("hits").getJSONArray("hits");
-            String fin = "";
-            ObjectMapper mapper = new ObjectMapper();
-            for (int i = 0; i < arr.length(); i++) {
-                // convert JSON string to Map
-                fin = arr.getJSONObject(i).getJSONObject("_source").toString();
-                map = mapper.readValue(fin, Map.class);
-                map.put("id_tweet",  arr.getJSONObject(i).getString("_id"));
-                list.add(map);
-            }
-            return list;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            httpClient.close();
-        }
-        return null;
-    }
-
-    public List<Map<String, Object>> SearchHashtags(String search) throws IOException{
-        String query = "{\"query\":{\"query_string\": {\"query\": \""+search+"\",\"fields\": [\"hashtags\"]}}}";
-        Map<String, List<Map<String, Object>>> model = new HashMap<String,List<Map<String, Object>>>();
-        List<Map<String, Object>> list = new ArrayList<>();
-        Map<String, Object> map;
-
-        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        try {
-            HttpPost request = getHttpPost(ES_URL + "/_search", query);
-            HttpResponse  response = httpClient.execute(request);
-            String s = getStringFromInputStream(response.getEntity().getContent());
-            int x = s.indexOf("{");
-            JSONObject json = new JSONObject(s.substring(x));
-            JSONArray arr = json.getJSONObject("hits").getJSONArray("hits");
-            String fin = "";
-            ObjectMapper mapper = new ObjectMapper();
-            for (int i = 0; i < arr.length(); i++) {
-                // convert JSON string to Map
-                fin = arr.getJSONObject(i).getJSONObject("_source").toString();
-                map = mapper.readValue(fin, Map.class);
-                map.put("id_tweet",  arr.getJSONObject(i).getString("_id"));
-                list.add(map);
-            }
-            return list;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            httpClient.close();
-        }
-        return null;
-    }
-
-
-
-    public List<Map<String, Object>> get_idtweet_lst(String id) throws IOException{
-        String query = "{\"query\":{\"match\": {\"id_user\" : "+id+"}}, \"sort\": { \"date\": { \"order\": \"desc\" }}}";
-
-        List<Map<String, Object>> list = new ArrayList<>();
-        Map<String, Object> map;
-
-        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        try {
-            HttpPost request = getHttpPost(ES_URL + "/_search", query);
-/*            Header[] headers = request.getAllHeaders();
-            System.out.println(request.toString());
-            for (Header header : headers) {
-                System.out.println(header.getName() + ": " + header.getValue());
-            }*/
-            HttpResponse response = httpClient.execute(request);
-            String s = getStringFromInputStream(response.getEntity().getContent());
-            /*System.out.println(s);*/
-            int x = s.indexOf("{");
-            JSONObject json = new JSONObject(s.substring(x));
-
-            JSONArray arr = json.getJSONObject("hits").getJSONArray("hits");
-
-
-            String fin = "";
-            ObjectMapper mapper = new ObjectMapper();
-            for (int i = 0; i < arr.length(); i++) {
-                // convert JSON string to Map
-                fin = arr.getJSONObject(i).getJSONObject("_source").toString();
-                map = mapper.readValue(fin, Map.class);
-                map.put("id_tweet", arr.getJSONObject(i).getString("_id"));
-/*                System.out.println("print");
-                for(String key:map.keySet()){
-                    System.out.println("treeMap: [key: "+key+" , value: "+map.get(key)+"]");
-                }*/
-                list.add(map);
-            }
-            return list;
-        }
-             catch (Exception ex) {
-                System.out.println(ex);
-            } finally {
-                httpClient.close();
-            }
-            return null;
-        }
 
     public Map<String, List<Map<String, Object>>> get_idtweet(String id) throws IOException{
         Map<String, List<Map<String, Object>>> model = new HashMap<String,List<Map<String, Object>>>();
-            model.put("tweets", get_idtweet_lst(id));
-            return model;
+
+        List<Map<String, Object>> List = search("{\"query\":{\"match\": {\"id_user\" : \""+id+"\"}}, \"sort\": { \"date\": { \"order\": \"desc\" }}}");
+        model.put("tweets", List);
+        return model;
 
     }
 
@@ -219,7 +102,8 @@ public class ES {
         List<Map<String, Object>> finalList = new ArrayList<>();
         Map<String, List<Map<String, Object>>> model = new HashMap<String,List<Map<String, Object>>>();
         for (int i = 0; i < user.getFollows().size(); i++) {
-            List<Map<String, Object>> newList = get_idtweet_lst(Integer.toString(user.getFollows().get(i)));
+            String id = Integer.toString(user.getFollows().get(i));
+            List<Map<String, Object>> newList = search("{\"query\":{\"match\": {\"id_user\" : \""+id+"\"}}, \"sort\": { \"date\": { \"order\": \"desc\" }}}");
             Stream.of(newList).forEach(finalList::addAll);
         }
         model.put("tweets", finalList);

@@ -55,8 +55,8 @@ public class UserController {
             ES es = new ES();
             String search = req.queryParams("search");
 			List<Map<String, Object>> db_search = userService.Search(search);
-			List<Map<String, Object>> es_search = es.Search(search);
-			List<Map<String, Object>> es_search_hashtags = es.SearchHashtags(search);
+			List<Map<String, Object>> es_search = es.search("{\"query\":{ \"bool\": { \"must\": { \"query_string\": { \"query\": \""+search+"\" } } } } ,\"sort\": { \"date\": { \"order\": \"desc\" }}}");
+			List<Map<String, Object>> es_search_hashtags = es.search("{\"query\":{\"query_string\": {\"query\": \""+search+"\",\"fields\": [\"hashtags\"]}}}");
             Map<String, List<Map<String, Object>>> model = model_user_info(req);
 			model.put("db", db_search);
 			model.put("tweet", es_search);
@@ -116,7 +116,9 @@ public class UserController {
 				response.redirect("/");
 			ES es = new ES();
 			Map<String, List<Map<String, Object>>> model = model_user_info(request);
-			model.put("tweets", es.get_idtweet(Integer.toString(getAuthenticatedUser(request).getId())).get("tweets"));
+			String id = Integer.toString(getAuthenticatedUser(request).getId());
+			List<Map<String, Object>> list = es.search("{\"query\":{\"match\": {\"id_user\" : "+id+"}}, \"sort\": { \"date\": { \"order\": \"desc\" }}}");
+			model.put("tweets", list);
 			return new ModelAndView(model, "params.hbs");
 		}, new HandlebarsHelper());
 
