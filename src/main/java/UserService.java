@@ -1,57 +1,84 @@
-/*
-package com.mscharhag.sparkdemo;
-*/
+import com.sun.applet2.Applet2;
 
-import java.util.*;
+import java.awt.*;
+import java.applet.*;
+import java.util.List;
+import java.util.Map;
 
-public class UserService {
+public class UserService extends Applet{
 
 	private static Db database = new Db();
 
-	private Map<Integer, User> users = new HashMap<>();
-
-	public List<User> getAllUsers() {
-		return new ArrayList<>(users.values());
+	public Result signup(String firstname,String lastname, String email, String pwd) {
+		Result result = new Result();
+		User user = new User();
+		user.setEmail(email);
+		if (checkEmail(user) == null) {
+			User user_register = new User(firstname, lastname, email, pwd);
+			result.setUser(user_register);
+		}else{
+			result.setError("This email already exists in our system. please choose a different one");
+		}
+		return result;
 	}
 
-	public User getUser(String id) {
-		return users.get(id);
+	public void follow(User user, int id) {
+		database.follow(user, id);
 	}
 
-	public User createUser(String firstname,String lastname, String email, String pwd) {
-		/*failIfInvalid(name, email);*/
-		User user = new User(firstname,lastname,email,pwd);
-		users.put(user.getId(), user);
-		return user;
+	public void unfollow(User user, int id) {
+		database.unfollow(user, id);
 	}
+
+	public List<Map<String, Object>> Search(String s){
+	    return database.Search(s);
+    }
 
 
 	public Result login(String email, String pwd) {
-		/*failIfInvalid(name, email);*/
-		User user = new User();
-		user.setEmail(email);
-		user.setPwd(pwd);
-/*		users.put(user.getId(), user);*/
-		return checkUser(user);
+		Result result = new Result();
+		User userlive = new User();
+		userlive.setEmail(email);
+		userlive.setPwd(pwd);
+		User userbdd = checkEmail(userlive);
+		if (userbdd == null) {
+			result.setError("Invalid email");
+		} else if (checkPwd(userbdd, userlive) == null) {
+			result.setError("Invalid password");
+		} else {
+			result.setUser(userbdd);
+		}
+		return result;
 	}
 
-	public Result checkUser(User user) {
+	public User checkEmail(User user){
 		try {
-			Result result = new Result();
 			User userFound = database.sql_where("email = '" + user.getEmail() + "'");
 			if (userFound == null) {
-				result.setError("Invalid email");
-			} else if (!database.verify_pwd(user.getPwd(), userFound.getPwd())) {
-				result.setError("Invalid password");
+				return null;
 			} else {
-				result.setUser(userFound);
+				return userFound;
 			}
-			return result;
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
+
+	public User checkPwd(User userbdd, User userlive){
+		try {
+			if (!database.verify_pwd(userlive.getPwd(), userbdd.getPwd())) {
+				return null;
+			} else {
+				return userbdd;
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
 
 
 /*	public User updateUser(String id, String name, String email) {

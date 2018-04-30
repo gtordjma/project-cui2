@@ -51,6 +51,19 @@ public class UserController {
 			return new ModelAndView(model, "index.hbs");
 		}, new HandlebarsTemplateEngine());
 
+		post("/search", (req, res) -> {
+            ES es = new ES();
+            String search = req.queryParams("search");
+			List<Map<String, Object>> db_search = userService.Search(search);
+			List<Map<String, Object>> es_search = es.Search(search);
+			List<Map<String, Object>> es_search_hashtags = es.SearchHashtags(search);
+            Map<String, List<Map<String, Object>>> model = model_user_info(req);
+			model.put("db", db_search);
+			model.put("tweet", es_search);
+			model.put("tags", es_search_hashtags);
+			return new ModelAndView(model, "result.hbs");
+		}, new HandlebarsTemplateEngine());
+
 		get("/signup", (request, response) -> {
 			if (getAuthenticatedUser(request) != null)
 				response.redirect("/profile");

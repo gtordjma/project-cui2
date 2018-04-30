@@ -1,0 +1,47 @@
+{{#partial "title" }}
+        Profile Information
+        {{/partial}}
+
+        <!--form.hbs.-->
+        {{#partial "content"}}
+
+<h1>Profile Information</h1>
+
+
+        <!--<form method='post' action='/signup'>-->
+        {{#if this.userinfo.0}}
+<div class="form-group">
+<label>First Name</label>
+<input name="firstname" class="form-control" value='{{ this.userinfo.0.firstname }}' type="text">
+<label>Last Name</label>
+<input name="lastname" class="form-control" value='{{ this.userinfo.0.lastname }}' type="text">
+<label>Email</label>
+<input name="email" class="form-control" value='{{ this.userinfo.0.email }}' type="email">
+<label>Follower</label>
+<ul>
+    {{#each this.userinfo.0.follower}}
+    <li>{{ this }}</li>
+    {{/each}}
+</ul>
+<label>Follows</label>
+<ul>
+    {{#each this.userinfo.0.follows}}
+    <li>{{ this }}</li>
+    {{/each}}
+</ul>
+</div>
+        {{/if}}
+<div class="timeline">
+{{#each tweets}}
+<ul class="tweet">
+    <li class="side"><a href="/profile/{{id_user}}"><h3>{{ username }}</h3></a></li>
+    <li class="side">{{ date }}</li>
+    <li>{{ tweet }}</li>
+    <li><a type="button" href="delete/{{id_tweet}}" class="btn btn-danger" role="button">Delete</a></li>
+</ul>
+{{/each}}
+</div>
+        <!--form.hbs.-->
+        {{/partial}}
+
+        {{> layout.hbs}}

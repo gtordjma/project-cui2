@@ -1,0 +1,42 @@
+{{#partial "title" }}
+        Result
+        {{/partial}}
+        {{#partial "content"}}
+<div class="result">
+<h3>Result</h3>
+    <div>
+        <h4>By Information</h4>
+        {{#each db}}
+        <ul class="profile">
+            <li ><a href="/profile/{{id}}"><h3>{{firstname}}{{lastname}}</h3></a><i>{{email}}</i></li>
+        </ul>
+        {{/each}}
+    </div>
+    <div>
+        <h4>By content</h4>
+        {{#each tweet}}
+        <ul class="tweet">
+            <li class="side"><a href="/profile/{{id_user}}"><h3>{{ username }}</h3></a></li>
+            <li class="side" style="margin-left: 80%;">{{ date }}</li>
+            <li>{{ tweet }}</li>
+            <!--<li>{{ hashtags }}</li>-->
+        </ul>
+        {{/each}}
+    </div>
+    <div>
+        <h4>By Hashtags</h4>
+        {{#each tags}}
+        <ul class="tweet">
+            <li class="side"><a href="/profile/{{id_user}}"><h3>{{ username }}</h3></a></li>
+            <li class="side" style="margin-left: 80%;">{{ date }}</li>
+            <li>{{ tweet }}</li>
+            <!--<li>{{ hashtags }}</li>-->
+        </ul>
+        {{/each}}
+    </div>
+
+</div>
+        {{/partial}}
+
+
+        {{> layout.hbs}}

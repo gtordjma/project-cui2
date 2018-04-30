@@ -39,6 +39,11 @@ Handlebars.registerHelper('json', function(context) {
     </div>
 
 </header>
+<form method='post' action='/search' style="text-align:center;margin-bottom: 50px;">
+    <input style="width : 40%;display:block; margin:auto;" name="search" placeholder="Search" class="form-control" type="text" required>
+    </input>
+    <button style="height: 30px;width: 30px;border-radius: 10px;" type="submit" class="glyphicon glyphicon-search"></button>
+</form>
 <!-- begin inner template-->
 <div class="container">
     {{#block "content"}}

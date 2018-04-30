@@ -1,0 +1,47 @@
+.tweet-form{
+    border: 1.5px solid #2AA3EF;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 50px 0px;
+}
+
+.menu{
+    height: 70px;
+}
+
+.menu > h1 {
+
+    position:  absolute;
+    margin:  0;
+    top: 18px;
+}
+
+.menu-right{
+
+    position:  absolute;
+    right:  0;
+    top: 18px;
+    /* top: 50%; */
+    /* bottom: 50%; */
+}
+
+.timeline{
+    border: 1px solid #2AA3EF;
+    border-radius: 5px;
+    padding: 30px;
+    }
+
+.tweet {
+border: 1px solid #2AA3EF;
+    border-radius: 15px;
+    ius: 13px;
+    color: black;
+    margin-bottom: 10px;
+    }
+.side {
+line-height: 20px;
+    display: inline-block;
+    }
+li {
+list-style:none;
+}

@@ -2,6 +2,10 @@ import java.lang.reflect.Array;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Db {
 
@@ -76,6 +80,36 @@ public class Db {
         }
         return null;
     }
+
+    public List<Map<String, Object>> Search(String s){
+        String query = "select id, firstname, lastname, email  from " + BDD + " where "
+                + "firstname like '%"+s+"%' or "
+                + "lastname like '%"+s+"%' or "
+                + "email like '%"+s+"%'";
+        List<Map<String, Object>> list = new ArrayList<>();
+        Map<String, Object> map;
+            try {
+                //Création d'un objet Statement
+                Statement state = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY,
+                        ResultSet.CONCUR_READ_ONLY);
+                //L'objet ResultSet contient le résultat de la requête SQL
+                ResultSet result = state.executeQuery(query);
+                while (result.next()){
+                    map = new HashMap<>();
+                    //On renvoie les MetaData
+                    map.put("id", result.getString("id"));
+                    map.put("firstname", result.getString("firstname"));
+                    map.put("lastname", result.getString("lastname"));
+                    map.put("email", result.getString("email"));
+                    list.add(map);
+                }
+                state.close();
+                return list;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
 
     public boolean follow(User user, int follow_id){
         user.setFollows(follow_id);

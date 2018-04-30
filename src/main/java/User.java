@@ -47,6 +47,7 @@ public class User {
 
 	public List<Integer> getFollows(){return this.follows;}
 	public void setFollows(int id){ this.follows.add(id);}
+	public void unsetFollows(int id){ if (this.follows.contains(id)){this.follows.remove(follows.indexOf(id));}}
 	public void setFollows(int []id){
 		for (int i = 0; i < id.length; i++)
 			this.follows.add(id[i]);
