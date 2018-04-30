@@ -1,21 +1,20 @@
 {{#partial "title" }}
-        Join Twitter Now
+       Cui2 - Login
         {{/partial}}
 
         <!--form.hbs.-->
         {{#partial "content"}}
 
 <h1>Fill in the form!</h1>
-<form method='post' action='/login'>
-<div class="form-group">
-    <label>Email</label>
-    <input name="email" class="form-control" type="email">
-    <label>Password</label>
-    <input name="pwd" class="form-control" type="password">
-</div>
-
-<button type="submit" class="btn">Go!</button>
-</form>
+    <form method='post' action='/login'>
+        <div class="form-group">
+            <label>Email</label>
+            <input name="email" class="form-control" type="email" required>
+            <label>Password</label>
+            <input name="pwd" class="form-control" type="password" required>
+        </div>
+        <button type="submit" class="btn">Go!</button>
+    </form>
     {{#if error}}
         <div class="alert alert-danger">
             <strong>Error:</strong> {{error}}

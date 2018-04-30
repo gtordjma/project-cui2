@@ -14,18 +14,22 @@
 <form method='post' action='/signup'>
 <div class="form-group">
     <label>First Name</label>
-    <input name="firstname" class="form-control" type="text">
+    <input name="firstname" class="form-control" type="text" required>
     <label>Last Name</label>
-    <input name="lastname" class="form-control" type="text">
+    <input name="lastname" class="form-control" type="text" required>
     <label>Email</label>
-    <input name="email" class="form-control" type="email">
+    <input name="email" class="form-control" type="email" required>
     <label>Password</label>
-    <input name="pwd" class="form-control" type="password">
+    <input name="pwd" class="form-control" type="password" required>
 </div>
 
 <button type="submit" class="btn">Go!</button>
 </form>
-        <!--form.hbs.-->
+        {{#if error}}
+<div class="alert alert-danger">
+<strong>Error:</strong> {{error}}
+</div>
+        {{/if}}
         {{/partial}}
 
         {{> layout.hbs}}

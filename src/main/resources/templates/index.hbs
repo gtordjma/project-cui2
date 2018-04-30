@@ -1,23 +1,27 @@
+{{#partial "title" }}
+    Welcome !
+{{/partial}}
 {{#partial "content"}}
-<!--        {{#each myRectangles}}
-<p><h3>Your rectangle's height is {{height}}</h3></p>
-<p><h3>Your rectangle's width is {{width}}</h3></p>
-        {{/each}}-->
-<a type="button" href="/login"  class="btn btn-warning" role="button">Login</a>
-<a type="button" href="/signup" class="btn btn-warning" role="button">Sign Up</a>
-
-
-        {{#if id}}
-<form method='post' action='/'>
-<div class="form-group">
-    <label>Tweet</label>
-    <input name="tweet" class="form-control" type="text">
+    {{#if this.userinfo.0.id}}
+        <form method='post' class="tweet-form" action='/'>
+            <div class="form-group">
+            <input name="tweet" class="form-control" type="text" maxlength="10" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Tweet</button>
+        </form>
+    {{/if}}
+<div class="timeline">
+<h3>Public timeline</h3>
+        {{#each tweets}}
+<ul class="tweet">
+<li class="side"><a href="/profile/{{id_user}}"><h3>{{ username }}</h3></a></li>
+<li class="side" style="margin-left: 80%;">{{ date }}</li>
+<li>{{ tweet }}</li>
+<!--<li>{{ hashtags }}</li>-->
+</ul>
+        {{/each}}
 </div>
+{{/partial}}
 
-<a type="button" class="btn btn-primary" role="button">Tweet</a>
-</form>
-{{/if}}
 
-        {{/partial}}
-
-        {{> layout.hbs}}
+{{> layout.hbs}}

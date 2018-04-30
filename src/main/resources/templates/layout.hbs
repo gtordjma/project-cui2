@@ -3,22 +3,52 @@
         <!DOCTYPE html>
 <html>
 <head>
-    <title>{{#block "title"}}Hello Friend!{{/block}}
-    </title>
+    <title>{{#block "title"}}Hello Friend!{{/block}}</title>
+    <link rel="stylesheet" type="text/css" href="http://0.0.0.0:4567/style.css">
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
     <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+
+
+
+
+<!--    <script>
+Handlebars.registerHelper('json', function(context) {
+        console.log(JSON.stringify(context));
+        });
+</script>-->
+
 </head>
 <body>
 {{/block}}
+<header class="menu">
+    <h1>Cui2</h1>
+    <div class="menu-right">
+        <a type="button" href="/" class="btn btn-primary" role="button">Home</a>
+        {{#if this.userinfo.0.id}}
+        <a type="button" href="/usertimeline" class="btn btn-primary" role="button">User Timeline</a>
+        <a type="button" href="/profile" class="btn btn-warning" role="button">Profile</a>
+        <a type="button" href="/logout" class="btn btn-danger" role="button">Logout</a>
+        {{else}}
+        <a type="button" href="/login"  class="btn btn-success" role="button">Login</a>
+        <a type="button" href="/signup" class="btn btn-warning" role="button">Sign Up</a>
+        {{/if}}
+    </div>
 
+</header>
 <!-- begin inner template-->
 <div class="container">
     {{#block "content"}}
     {{/block}}
-
 </div>
 <!-- end inner template-->
 {{#block "footer"}}
+{{/block}}
 
 </body>
+
 </html>
-        {{/block}}
+
